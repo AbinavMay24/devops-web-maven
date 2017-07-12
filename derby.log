@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Wed Jul 12 09:28:08 IST 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-015d-34f2-6a6e-00000f311710 
+on database directory memory:D:\1017141\STS-WORKSPACE\devops-web-maven\testdb with class loader org.springframework.boot.loader.LaunchedURLClassLoader@77459877 
+Loaded from jar:file:/D:/1017141/STS-WORKSPACE/devops-web-maven/target/devops-web-0.0.1-SNAPSHOT.jar!/BOOT-INF/lib/derby-10.12.1.1.jar!/
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_60-b27
+user.dir=D:\1017141\STS-WORKSPACE\devops-web-maven
+os.name=Windows 7
+os.arch=amd64
+os.version=6.1
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
