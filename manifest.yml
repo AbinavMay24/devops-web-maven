@@ -2,8 +2,8 @@
 applications:
   - name: devops-web-maven-app
     buildpack: https://github.com/cloudfoundry/java-buildpack.git
-    memory: 1G
-    disk_quota: 1G
+    # memory: 1G
+    # disk_quota: 1G
     timeout : 180    
     path: target/devops-web-maven-app.jar
 env:
