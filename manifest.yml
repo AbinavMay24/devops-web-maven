@@ -1,5 +1,6 @@
 ---
 applications:
   - name: devops-web-maven-app
-    memory: 256M
-    path: target/devops-web.war
+    memory: 512M
+    buildpack: java_buildpack
+    path: target/devops-web-maven-app.jar
