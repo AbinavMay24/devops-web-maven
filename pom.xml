@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<spring-cloud.version>1.12.0_RELEASE</spring-cloud.version>
+		<!-- <spring-cloud.version>1.12.0_RELEASE</spring-cloud.version> -->
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
@@ -56,7 +56,7 @@
 		</dependency>
 		
 		<!-- CloudFoundry --> 
-		
+		<!--
 		<dependency>
 		        <groupId>org.springframework.cloud</groupId>
 		        <artifactId>spring-cloud-cloudfoundry-connector</artifactId>
@@ -68,7 +68,7 @@
 		        <artifactId>spring-cloud-spring-service-connector</artifactId>
 		        <version>${spring-cloud.version}</version>
 		</dependency>
-		
+		-->
 		
 	</dependencies>
 
