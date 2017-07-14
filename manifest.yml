@@ -1,6 +1,10 @@
 ---
 applications:
   - name: devops-web-maven-app
-    memory: 512M
-    buildpack: java_buildpack
+    buildpack: https://github.com/cloudfoundry/java-buildpack.git
+    memory: 1G
+    disk_quota: 1G
+    timeout : 180    
     path: target/devops-web-maven-app.jar
+env:
+    SPRING_PROFILES_ACTIVE : cloud
