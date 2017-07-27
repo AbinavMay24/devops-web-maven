@@ -15,7 +15,6 @@ pipeline {
              } else {
                  mvnHome = tool 'D:\\1017141\\Tools\\apache-maven-3.5.0'
              }
-
          }
          stage('Build') {
             // Run the maven build
