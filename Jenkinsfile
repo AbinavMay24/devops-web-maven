@@ -1,4 +1,4 @@
-#!groovy
+#!/usr/bin/env groovy
 
 /* Only keep the 10 most recent builds. */
 def projectProperties = [
@@ -21,7 +21,7 @@ try {
             if (isUnix()) {
                 mvnHome = tool 'mvn3.3.9'
             } else {
-                mvnHome = tool 'D:\\1017141\\Tools\\apache-maven-3.5.0'
+                mvnHome = tool 'mvn3'
             }
         }
         stage('Build') {
