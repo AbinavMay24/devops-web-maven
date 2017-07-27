@@ -2,9 +2,9 @@
 
 /* Only keep the 10 most recent builds. */
 def projectProperties = [
-        [$class: 'BuildDiscarderProperty',strategy: [$class: 'LogRotator', numToKeepStr: '5', daysToKeepStr: '10']],
+        buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '10')),
         [$class: 'GithubProjectProperty', projectUrlStr: 'https://github.com/veersudhir83/devops-web-maven.git/'],
-        [pipelineTriggers([pollSCM('H/5 * * * *')])]
+        pipelineTriggers([pollSCM('H/5 * * * *')])
 ]
 
 properties(projectProperties)
