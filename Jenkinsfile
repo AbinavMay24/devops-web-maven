@@ -18,7 +18,8 @@ try {
         def mvnHome
         stage('Preparation') { // for display purposes
             // Get some code from a GitHub repository
-            // git 'https://github.com/veersudhir83/devops-web-maven.git'
+            git url: 'https://github.com/veersudhir83/devops-web-maven.git',
+                    branch: 'master'
             // Get the Maven tool.
             // ** NOTE: This 'M3' Maven tool must be configured in the global configuration.
             if (isUnix()) {
