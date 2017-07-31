@@ -22,7 +22,7 @@ public class DevopsWebMavenApplication {
     }
     
     @Bean
-    WebMvcConfigurer configurer () {
+    WebMvcConfigurer configurer() {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addResourceHandlers (ResourceHandlerRegistry registry) {
