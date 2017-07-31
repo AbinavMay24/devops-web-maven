@@ -6,6 +6,3 @@ applications:
     disk_quota: 256M
     #buildpack: https://github.com/cloudfoundry/java-buildpack.git
     path: target/devops-web-maven.war
-
-
-
