@@ -4,4 +4,8 @@ applications:
     instances: 2
     memory: 128M
     disk_quota: 256M
+    #buildpack: https://github.com/cloudfoundry/java-buildpack.git
     path: target/devops-web-maven.war
+
+
+
