@@ -1,5 +1,7 @@
 ---
 applications:
   - name: devops-web-maven-app
-    memory: 256M
-    path: target/devops-web.war
+    instances: 2
+    memory: 128M
+    disk_quota: 256M
+    path: target/devops-web-maven.war
