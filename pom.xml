@@ -6,7 +6,7 @@
 	<groupId>io.sudheer.devops.web</groupId>
 	<artifactId>devops-web-maven</artifactId>
 	<version>1.0</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>devops-web-maven</name>
 	<description>Demo project for Spring Boot</description>
@@ -63,7 +63,7 @@
 		</plugins>
 	</build>
 
-    <reporting>
+    <!--<reporting>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -86,7 +86,7 @@
                 </configuration>
             </plugin>
         </plugins>
-    </reporting>
+    </reporting>-->
 
 
 </project>
