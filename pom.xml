@@ -60,7 +60,11 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+		</plugins>
+	</build>
 
+    <reporting>
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
@@ -82,8 +86,8 @@
                     </formats>
                 </configuration>
             </plugin>
-		</plugins>
-	</build>
+        </plugins>
+    </reporting>
 
 
 </project>
