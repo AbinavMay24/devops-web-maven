@@ -63,6 +63,32 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>metrics</id>
+			<build>
+				<plugins>
+					<!-- PMD -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-pmd-plugin</artifactId>
+						<version>3.2</version>
+						<configuration>
+							<targetJdk>1.8</targetJdk>
+							<aggregate>true</aggregate>
+							<format>xml</format>
+							<!-- CPD options -->
+							<minimumTokens>20</minimumTokens>
+							<!--<ignoreIdentifiers>true</ignoreIdentifiers>-->
+							<failOnViolation>true</failOnViolation>
+							<failurePriority>2</failurePriority>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
     <!--<reporting>
         <plugins>
             <plugin>
