@@ -1,0 +1,77 @@
+---
+- hosts: infra
+  remote_user: edureka
+  vars:
+    ansible_ssh_private_key_file: "/home/edureka/.ssh/id_rsa"
+    WORKSPACE: "{{ lookup('env','WORKSPACE') }}"
+    APPLICATION_NAME: "devops-web-maven"
+    WAR_NAME: "{{ APPLICATION_NAME }}.war"
+    TOMMEE_HOME: "/home/edureka/devops/apache-tomcat-8.0.44"
+    TOMMEE_PROCESS_NAME: "apache-tomcat-8.0.44"
+    SHELL_RUN_PATH: "~/tmp"
+
+  tasks:
+    - name: start-date-time
+      shell: |
+        echo "$(date +%s)" > starttimefile
+      args:
+        chdir: "{{ SHELL_RUN_PATH }}"
+
+    - name: Fetch Tomcat Process Id
+      shell: "ps -ef | grep {{ TOMMEE_PROCESS_NAME }} | grep -v grep | awk '{print $2}'"
+      register: tommee_pid
+
+    - name: debug info is printed
+      debug:
+        var: tommee_pid.stdout
+        verbosity: 2
+
+    - name: Delete Old Files      
+      shell: |
+        rm {{ WAR_NAME }} || true
+        rm -rf {{ APPLICATION_NAME }}/ || true
+      args:
+        chdir: "{{ TOMMEE_HOME }}/webapps/"
+
+    - name: Stop Tomcat using nohup
+      command: "nohup {{ TOMMEE_HOME }}/bin/shutdown.sh"
+      when: tommee_pid.stdout != ""
+      tags: stopTomcat
+
+    - name: Copy/Overwrite application war file
+      tags: deployWar
+      copy:
+        src: "{{ WORKSPACE }}/{{ APPLICATION_NAME }}/target/{{ WAR_NAME }}"
+        dest: "{{ TOMMEE_HOME }}/webapps/"
+        owner: edureka
+        group: edureka
+        mode: 0755
+
+    - name: Start Tomcat using nohup
+      command: "nohup {{ TOMMEE_HOME }}/bin/startup.sh"
+      tags: startTomcat
+
+    - name: Pause for 10 seconds to build app cache.
+      pause:
+        seconds: 10
+
+#    - name: Update Last Deployed Timestamp
+#      shell: 'sed -i "8s/.*/Last Deployed at $(date)/" LastDeployed.html'
+#      args:
+#        chdir: "{{ TOMMEE_HOME }}/webapps/{{ APPLICATION_NAME }}/"
+#      tags: updateLastDeployed
+
+    - name: finish-date-time
+      shell: |
+        finishtime=$(date +%s)
+        starttime=`cat starttimefile`
+        DIFF=$(( $finishtime - $starttime ))
+        echo "Playbook ran for $((DIFF/60)) mins and $((DIFF%60)) seconds"
+        rm starttimefile
+      args:
+        chdir: "{{ SHELL_RUN_PATH }}"
+      register: DURATION
+
+    - name: Print Duration Information
+      debug:
+        msg: "{{ DURATION.stdout }}"
