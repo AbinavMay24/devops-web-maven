@@ -5,7 +5,7 @@
     ansible_ssh_private_key_file: "/home/edureka/.ssh/id_rsa"
     WORKSPACE: "{{ lookup('env','WORKSPACE') }}"
     APPLICATION_NAME: "devops-web-maven"
-    WAR_NAME: "{{ APPLICATION_NAME }}.war"
+    WAR_NAME: "{{ APPLICATION_NAME }}*.war"
     TOMMEE_HOME: "/home/edureka/devops/apache-tomcat-8.0.44"
     TOMMEE_PROCESS_NAME: "apache-tomcat-8.0.44"
     SHELL_RUN_PATH: "~/tmp"
