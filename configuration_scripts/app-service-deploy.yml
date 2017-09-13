@@ -1,0 +1,86 @@
+---
+- hosts: infra
+  remote_user: edureka
+  vars:
+    ansible_ssh_private_key_file: "/home/edureka/.ssh/id_rsa"
+    WORKSPACE: "{{ lookup('env','WORKSPACE') }}"
+    APPLICATION_NAME: "devops-web-maven"
+    JAR_LOCATION: "/home/edureka/devops"
+    JAR_NAME: "{{ APPLICATION_NAME }}.jar"
+    INIT_SCRIPT: "devops-web-maven-init-script"
+    SHELL_RUN_PATH: "/home/edureka/tmp"
+
+  tasks:
+    - name: Create Folder
+      file:
+        path: "{{ SHELL_RUN_PATH }}"
+        owner: edureka
+        group: edureka
+        mode: 0755
+        state: directory
+      tags: createTempFolder
+
+    - name: start-date-time
+      shell: |
+        echo "$(date +%s)" > starttimefile
+      args:
+        chdir: "{{ SHELL_RUN_PATH }}"
+      tags: captureStartDttm
+
+    - name: Stop Application Service
+      command: "nohup service {{ INIT_SCRIPT }} stop"
+      tags: stopApplication
+
+    - name: Delete Old Files
+      shell: |
+        rm {{ JAR_NAME }} || true
+      args:
+        chdir: "{{ JAR_LOCATION }}"
+      tags: delOldFile
+
+    - name: Copy/Overwrite application jar file
+      tags: deployJar
+      copy:
+        src: "{{ WORKSPACE }}/{{ APPLICATION_NAME }}/target/{{ JAR_NAME }}"
+        dest: "{{ JAR_LOCATION }}/"
+        owner: edureka
+        group: edureka
+        mode: 0755
+
+    - name: Start Application Service
+      command: "nohup service {{ INIT_SCRIPT }} start"
+      tags: startApplication
+
+    - name: Pause for 20 seconds to build app cache.
+      pause:
+        seconds: 20
+      tags: waitTime
+
+#    - name: Update Last Deployed Timestamp
+#      shell: 'sed -i "8s/.*/Last Deployed at $(date)/" LastDeployed.html'
+#      args:
+#        chdir: "{{ TOMMEE_HOME }}/webapps/{{ APPLICATION_NAME }}/"
+#      tags: updateLastDeployed
+
+    - name: finish-date-time
+      shell: |
+        finishtime=$(date +%s)
+        starttime=`cat starttimefile`
+        DIFF=$(( $finishtime - $starttime ))
+        echo "Playbook ran for $((DIFF/60)) mins and $((DIFF%60)) seconds"
+        rm starttimefile
+      args:
+        chdir: "{{ SHELL_RUN_PATH }}"
+      register: DURATION
+      tags: calculateDuration
+
+    - name: delete-temp-folder
+      file:
+        path: "{{ SHELL_RUN_PATH }}"
+        state: absent
+      tags: delTempFolder
+
+    - name: Print Duration Information
+      debug:
+        msg: "{{ DURATION.stdout }}"
+      tags: printDuration

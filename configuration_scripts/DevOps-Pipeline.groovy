@@ -234,7 +234,7 @@ try {
                 echo 'Deploy application using ansible'
                 try {
                     if (isUnix()) {
-                        ansiblePlaybook installation: 'ansible1.5', playbook: 'devops-web-maven/configuration_scripts/app-deploy.yml'
+                        ansiblePlaybook installation: 'ansible1.5', playbook: 'devops-web-maven/configuration_scripts/app-service-deploy.yml'
 
                         // Deployment to docker containers devopsmaven-container*
                         // Commented out on purpose - Use with customization when needed
