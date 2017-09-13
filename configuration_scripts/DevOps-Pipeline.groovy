@@ -27,7 +27,7 @@ try {
         def appName = 'devops-web-maven'// application name currently in progress
         def appEnv  // application environment currently in progress
         def artifactName = appName // name of the war/jar/ear in artifactory
-        def artifactExtension = "war" // extension of the war/jar/ear - for both target directory and artifactory
+        def artifactExtension = "jar" // extension of the war/jar/ear - for both target directory and artifactory
         def artifactoryRepoName = 'DevOps' // repo name in artifactory
         def artifactoryAppName = appName // application name as per artifactory
 
