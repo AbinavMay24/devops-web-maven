@@ -39,33 +39,31 @@ run_as() {
     iwant="$1";
     shift;
 
-    if [ "${iam}" = "${iwant}" ]; then {
-    eval $*;
-    }
-    else {
+    if [ "${iam}" = "${iwant}" ] ; then
+        eval $*;
+    else
     /bin/su -p -s /bin/sh ${iwant} $*;
-    } fi;
+    fi
 }
 
 # Function: start
 start() {
   pid=${MS_PID}
-  if [ -n "${pid}" ]; then {
+  if [ -n "${pid}" ] ; then
     echo "Application Service is already running (pid: ${pid})";
-  }
-  else {
+  else
     # Start screener ms
     echo "Starting Application Service";
     cd $MS_HOME
     run_as ${RUNASUSER} java -jar ./${MS_JAR};
-  } fi;
+  fi
   # return 0;
 }
 
 # Function: stop
 stop() {
   pid=${MS_PID}
-  if [ -n "${pid}" ]; then {
+  if [ -n "${pid}" ] ; then
 
     run_as ${RUNASUSER} kill -TERM $pid
 
@@ -74,15 +72,15 @@ stop() {
     kwait=${SHUTDOWN_WAIT};
 
     count=0;
-    while kill -0 ${pid} 2>/dev/null && [ ${count} -le ${kwait} ]; do {
+    while kill -0 ${pid} 2>/dev/null && [ ${count} -le ${kwait} ] ; do
       printf ".";
       sleep 1;
       (( count++ ));
-    } done;
+    done
 
     echo;
 
-    if [ ${count} -gt ${kwait} ]; then {
+    if [ ${count} -gt ${kwait} ] ; then
       printf "Application Process is still running after %d seconds, killing process" \
     ${SHUTDOWN_WAIT};
       kill ${pid};
@@ -90,24 +88,22 @@ stop() {
 
       # if it's still running use kill -9
       #
-      if kill -0 ${pid} 2>/dev/null; then {
+      if kill -0 ${pid} 2>/dev/null ; then
         echo "Application Process is still running, using kill -9";
         kill -9 ${pid}
         sleep 3;
-      } fi;
-    } fi;
+      fi
+    fi
 
-    if kill -0 ${pid} 2>/dev/null; then {
+    if kill -0 ${pid} 2>/dev/null ; then
       echo "Application Process is still running, I give up";
-    }
-    else {
-      # success, delete PID file, if you have used it with spring boot
+    else
+      echo "success, delete PID file, if you have used it with spring boot";
       # rm -f ${SPRING_BOOT_APP_PID};
-    } fi;
-  }
-  else {
+    fi
+  else
       echo "Application Service is not running";
-  } fi;
+  fi
 
   #return 0;
 }
@@ -128,12 +124,11 @@ case $1 in
     ;;
   status)
     pid=$MS_PID
-    if [ "${pid}" ]; then {
+    if [ "${pid}" ] ; then
       echo "Application Service is running with pid: ${pid}";
-    }
-    else {
+    else
       echo "Application Service is not running";
-    } fi;
+    fi
     ;;
 esac
 
