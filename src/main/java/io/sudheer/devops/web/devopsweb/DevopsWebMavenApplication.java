@@ -9,15 +9,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @EnableAutoConfiguration
 public class DevopsWebMavenApplication {
-
-	/*public static void main(String[] args) {
-		SpringApplication.run(DevopsWebMavenApplication.class, args);
-	}*/
-	
-	
     public static void main (String[] args) {
-        SpringApplication app =
-                  new SpringApplication(DevopsWebMavenApplication.class);
+        SpringApplication app = new SpringApplication(DevopsWebMavenApplication.class);
         app.run(args);
     }
     
@@ -31,5 +24,4 @@ public class DevopsWebMavenApplication {
             }
         };
     }
-	
 }
