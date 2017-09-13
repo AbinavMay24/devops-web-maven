@@ -8,15 +8,15 @@
       </jobPropertyDescriptors>
     </org.jenkinsci.plugins.workflow.multibranch.JobPropertyTrackerAction>
   </actions>
-  <description>DevOps Pipeline</description>
+  <description>devops-web-maven Pipeline</description>
   <keepDependencies>false</keepDependencies>
   <properties>
     <jenkins.model.BuildDiscarderProperty>
       <strategy class="hudson.tasks.LogRotator">
-        <daysToKeep>5</daysToKeep>
-        <numToKeep>5</numToKeep>
-        <artifactDaysToKeep>5</artifactDaysToKeep>
-        <artifactNumToKeep>5</artifactNumToKeep>
+        <daysToKeep>20</daysToKeep>
+        <numToKeep>20</numToKeep>
+        <artifactDaysToKeep>20</artifactDaysToKeep>
+        <artifactNumToKeep>20</artifactNumToKeep>
       </strategy>
     </jenkins.model.BuildDiscarderProperty>
     <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.28.0">
@@ -35,13 +35,18 @@
           </choices>
         </hudson.model.ChoiceParameterDefinition>
         <hudson.model.BooleanParameterDefinition>
-          <name>ISANALYSISENABLED</name>
+          <name>IS_ANALYSIS_ENABLED</name>
           <description>Should I run Static Code Analysis?</description>
           <defaultValue>false</defaultValue>
         </hudson.model.BooleanParameterDefinition>
         <hudson.model.BooleanParameterDefinition>
-          <name>ISARCHIVALENABLED</name>
+          <name>IS_ARCHIVAL_ENABLED</name>
           <description>Should I version artifacts in Artifactory?</description>
+          <defaultValue>false</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>IS_DEPLOYMENT_ENABLED</name>
+          <description>Should I deploy the code on App Server?</description>
           <defaultValue>false</defaultValue>
         </hudson.model.BooleanParameterDefinition>
       </parameterDefinitions>

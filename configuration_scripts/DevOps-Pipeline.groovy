@@ -20,10 +20,10 @@ try {
         def artifactoryPublishInfo
         def artifactoryDownloadInfo
         def artifactoryServer
-        def isArchivalEnabled = params.ISARCHIVALENABLED
-                // true // Enable if you want to archive files and configs to artifactory
-        def isAnalysisEnabled = params.ISANALYSISENABLED
-                // true // Enable if you want to analyze code with sonarqube
+        def isArchivalEnabled = params.IS_ARCHIVAL_ENABLED // Enable if you want to archive files and configs to artifactory
+        def isAnalysisEnabled = params.IS_ANALYSIS_ENABLED // Enable if you want to analyze code with sonarqube
+        def isDeploymentEnabled = params.IS_DEPLOYMENT_ENABLED // Enable if you want to deploy code on app server
+
         def appName = 'devops-web-maven'// application name currently in progress
         def appEnv  // application environment currently in progress
         def artifactName = appName // name of the war/jar/ear in artifactory
