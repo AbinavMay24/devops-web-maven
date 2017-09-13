@@ -87,6 +87,12 @@
       register: DURATION
       tags: calculateDuration
 
+    - name: delete-temp-folder
+      file:
+        path: "{{ SHELL_RUN_PATH }}"
+        state: absent
+      tags: delTempFolder
+
     - name: Print Duration Information
       debug:
         msg: "{{ DURATION.stdout }}"
