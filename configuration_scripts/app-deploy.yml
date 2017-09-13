@@ -13,26 +13,30 @@
   tasks:
     - name: Create Folder
       file:
-       path: "{{ SHELL_RUN_PATH }}"
-       owner: edureka
-       group: edureka
-       mode: 0755
-       state: directory
+        path: "{{ SHELL_RUN_PATH }}"
+        owner: edureka
+        group: edureka
+        mode: 0755
+        state: directory
+      tags: createTempFolder
 
     - name: start-date-time
       shell: |
         echo "$(date +%s)" > starttimefile
       args:
         chdir: "{{ SHELL_RUN_PATH }}"
+      tags: captureStartDttm
 
     - name: Fetch Tomcat Process Id
       shell: "ps -ef | grep {{ TOMMEE_PROCESS_NAME }} | grep -v grep | awk '{print $2}'"
       register: tommee_pid
+      tags: fetchPID
 
     - name: debug info is printed
       debug:
-        var: tommee_pid.stdout
+        var: tommee_pid
         verbosity: 2
+      tags: printDebugInfo
 
     - name: Delete Old Files
       shell: |
@@ -40,6 +44,7 @@
         rm -rf {{ APPLICATION_NAME }}/ || true
       args:
         chdir: "{{ TOMMEE_HOME }}/webapps/"
+      tags: delOldFiles
 
     - name: Stop Tomcat using nohup
       command: "nohup {{ TOMMEE_HOME }}/bin/shutdown.sh"
@@ -62,6 +67,7 @@
     - name: Pause for 10 seconds to build app cache.
       pause:
         seconds: 10
+      tags: waitTime
 
 #    - name: Update Last Deployed Timestamp
 #      shell: 'sed -i "8s/.*/Last Deployed at $(date)/" LastDeployed.html'
@@ -79,7 +85,9 @@
       args:
         chdir: "{{ SHELL_RUN_PATH }}"
       register: DURATION
+      tags: calculateDuration
 
     - name: Print Duration Information
       debug:
         msg: "{{ DURATION.stdout }}"
+      tags: printDuration
