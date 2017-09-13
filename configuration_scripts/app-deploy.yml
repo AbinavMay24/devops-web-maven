@@ -13,7 +13,7 @@
   tasks:
     - name: Create Folder
       file:
-       path: {{ SHELL_RUN_PATH }}
+       path: "{{ SHELL_RUN_PATH }}"
        owner: edureka
        group: edureka
        mode: 0755
