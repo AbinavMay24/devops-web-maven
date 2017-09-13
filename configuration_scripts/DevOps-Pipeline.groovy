@@ -230,15 +230,15 @@ try {
         }
 
         stage('Deployment') {
-            // TODO: Add code for deployment of project to server
-            echo 'Deploy application using ansible'
-            try {
-                if (isUnix()) {
-                    ansiblePlaybook installation: 'ansible1.5', playbook: 'devops-web-maven/configuration_scripts/app-deploy.yml'
+            if (isDeploymentEnabled) {
+                echo 'Deploy application using ansible'
+                try {
+                    if (isUnix()) {
+                        ansiblePlaybook installation: 'ansible1.5', playbook: 'devops-web-maven/configuration_scripts/app-deploy.yml'
 
-                    // Deployment to docker containers devopsmaven-container*
-                    // Commented out on purpose - Use with customization when needed
-                    /*sh '''
+                        // Deployment to docker containers devopsmaven-container*
+                        // Commented out on purpose - Use with customization when needed
+                        /*sh '''
                         docker ps -a | awk '{print $NF}' | grep -w devopsmaven* > temp.txt
                         sort temp.txt -o container_names_files.txt
                         while IFS='' read -r line || [[ -n "$line" ]]; do
@@ -251,13 +251,14 @@ try {
                             echo "jar file is copied !!"
                         done < "container_names_files.txt"
                     '''*/
-                } else {
-                    dir('devops-web-maven\\') {
-                        // Do Something else
+                    } else {
+                        dir('devops-web-maven\\') {
+                            // Do Something else
+                        }
                     }
+                } catch (exc) {
+                    error "Failure in Deployment stage: ${exc}"
                 }
-            } catch(exc) {
-                error "Failure in Deployment stage: ${exc}"
             }
         }
 
