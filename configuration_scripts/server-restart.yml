@@ -13,7 +13,7 @@
 
     - name: debug info is printed
       debug:
-        var: tommee_pid
+        var: tommee_pid.stdout
         verbosity: 2
       tags: printDebugInfo
 
