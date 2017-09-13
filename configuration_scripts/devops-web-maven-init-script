@@ -3,8 +3,8 @@
 ############## Instructions ###################
 # 1) Place this file say 'spring-boot-app' under /etc/init.d/ directory
 # 2) Then make it executable:  chmod +x /etc/init.d/<spring-boot-app>
-# 3) Afterwards can simply use the process by doing something like
-#    sudo service <spring-boot-app> start|stop|restart|status
+# 3) Then use the process by doing something like below as user 'edureka' (configured as RUNASUSER in the script)
+#    service <spring-boot-app> start|stop|restart|status
 ###############################################
 #=-= START OF CUSTOM SERVICE CONFIGURATION =-#
 # Where micro service war/jar file sits?
@@ -42,7 +42,7 @@ run_as() {
     if [ "${iam}" = "${iwant}" ] ; then
         eval $*;
     else
-    /bin/su -p -s /bin/sh ${iwant} $*;
+        /bin/su -p -s /bin/sh ${iwant} $*;
     fi
 }
 
@@ -52,7 +52,6 @@ start() {
   if [ -n "${pid}" ] ; then
     echo "Application Service is already running (pid: ${pid})";
   else
-    # Start screener ms
     echo "Starting Application Service";
     cd $MS_HOME
     run_as ${RUNASUSER} java -jar ./${MS_JAR};
@@ -98,8 +97,7 @@ stop() {
     if kill -0 ${pid} 2>/dev/null ; then
       echo "Application Process is still running, I give up";
     else
-      echo "success, delete PID file, if you have used it with spring boot";
-      # rm -f ${SPRING_BOOT_APP_PID};
+      echo "Success, Application is stopped";
     fi
   else
       echo "Application Service is not running";
@@ -119,7 +117,7 @@ case $1 in
     ;;
   restart)
     stop;
-    sleep 1;
+    sleep ${SHUTDOWN_WAIT};
     start;
     ;;
   status)
