@@ -11,6 +11,14 @@
     SHELL_RUN_PATH: "~/tmp"
 
   tasks:
+    - name: Create Folder
+      file:
+       path: {{ SHELL_RUN_PATH }}
+       owner: edureka
+       group: edureka
+       mode: 0755
+       state: directory
+
     - name: start-date-time
       shell: |
         echo "$(date +%s)" > starttimefile
