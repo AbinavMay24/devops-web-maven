@@ -139,12 +139,12 @@ try {
             try {
                 if (isUnix()) {
                     dir('devops-web-maven/') {
-                        sh "'${mvnHome}/bin/mvn' clean package -P metrics pmd:pmd pmd:cpd javadoc:javadoc"
+                        sh "'${mvnHome}/bin/mvn' clean package"
                         sh "cp ./target/${appName}*.${artifactExtension} ./target/${appName}.${artifactExtension}"
                     }
                 } else {
                     dir('devops-web-maven\\') {
-                        bat(/"${mvnHome}\bin\mvn" --batch-mode clean package -P metrics pmd:pmd pmd:cpd javadoc:javadoc/)
+                        bat(/"${mvnHome}\bin\mvn" --batch-mode clean package/)
                         bat(/copy .\\target\\\u0024{appName}*.\u0024{artifactExtension} .\\target\\\u0024{appName}.\u0024{artifactExtension}/)
                     }
                 }
@@ -158,11 +158,11 @@ try {
                 if (isAnalysisEnabled) {
                     if (isUnix()) {
                         dir('devops-web-maven/') {
-                            sh "'${mvnHome}/bin/mvn' sonar:sonar"
+                            sh "'${mvnHome}/bin/mvn' -P metrics pmd:pmd pmd:cpd javadoc:javadoc sonar:sonar"
                         }
                     } else {
                         dir('devops-web-maven\\') {
-                            bat(/"${mvnHome}\bin\mvn" --batch-mode sonar:sonar/)
+                            bat(/"${mvnHome}\bin\mvn" --batch-mode -P metrics pmd:pmd pmd:cpd javadoc:javadoc sonar:sonar /)
                         }
                     }
                 }
