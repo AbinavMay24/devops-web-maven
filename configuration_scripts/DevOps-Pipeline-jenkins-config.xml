@@ -49,6 +49,11 @@
           <description>Should I deploy the code on App Server?</description>
           <defaultValue>false</defaultValue>
         </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
+          <name>IS_REPORTS_ENABLED</name>
+          <description>Should I generate reports?</description>
+          <defaultValue>false</defaultValue>
+        </hudson.model.BooleanParameterDefinition>  
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>
     <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>

@@ -23,6 +23,7 @@ try {
         def isArchivalEnabled = params.IS_ARCHIVAL_ENABLED // Enable if you want to archive files and configs to artifactory
         def isAnalysisEnabled = params.IS_ANALYSIS_ENABLED // Enable if you want to analyze code with sonarqube
         def isDeploymentEnabled = params.IS_DEPLOYMENT_ENABLED // Enable if you want to deploy code on app server
+        def isReportsEnabled = params.IS_REPORTS_ENABLED // Enable if you want to generate reports
 
         def appName = 'devops-web-maven'// application name currently in progress
         def appEnv  // application environment currently in progress
@@ -263,16 +264,18 @@ try {
         }
 
         stage('Generate Reports') {
-            try {
-                if (isUnix()) {
-                    junit '**/devops-web-maven/target/surefire-reports/*.xml'
-                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'devops-web-maven/target/site/apidocs', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
-                } else {
-                    junit '**\\devops-web-maven\\target\\surefire-reports\\*.xml'
-                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'devops-web-maven\\target\\site\\apidocs', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
+            if (isReportsEnabled) {
+                try {
+                    if (isUnix()) {
+                        junit '**/devops-web-maven/target/surefire-reports/*.xml'
+                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'devops-web-maven/target/site/apidocs', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
+                    } else {
+                        junit '**\\devops-web-maven\\target\\surefire-reports\\*.xml'
+                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'devops-web-maven\\target\\site\\apidocs', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
+                    }
+                } catch (exc) {
+                    error "Failure in Generate Reports stage: ${exc}"
                 }
-            } catch (exc) {
-                error "Failure in Generate Reports stage: ${exc}"
             }
         }
 
