@@ -11,7 +11,23 @@
     SHELL_RUN_PATH: "/home/edureka/tmp"
 
   tasks:
-    - name: Create Folder
+    - name: Check presence of devops folder
+      stat:
+        path: "{{ JAR_LOCATION }}"
+      register: p
+      tags: checkDevOpsFolderExists
+
+    - name: Create devops Folder
+      file:
+        path: "{{ JAR_LOCATION }}"
+        owner: edureka
+        group: edureka
+        mode: 0755
+        state: directory
+      when: p.stat.isdir is not defined
+      tags: createDevOpsFolder
+
+    - name: Create Temp Folder
       file:
         path: "{{ SHELL_RUN_PATH }}"
         owner: edureka
