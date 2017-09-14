@@ -8,12 +8,15 @@
 ###############################################
 #=-= START OF CUSTOM SERVICE CONFIGURATION =-#
 # Where micro service war/jar file sits?
-MS_HOME=/home/edureka/devops # <--- EDIT THIS LINE
+MS_HOME=/home/edureka/devops
 
 # Actual file name of Micro Service (jar or war),
 # ms-service.war or something-0.0.1-SNAPSHOT.jar, etc.
-MS_JAR=devops-web-maven.jar # <--- EDIT THIS LINE
 # ^^^ that should relative to MS_HOME directory.
+MS_JAR=devops-web-maven.jar
+
+# Log files location
+LOG_FILE="${MS_HOME}"/logs/log-devops-web-maven.out
 
 # Which username we should run as.
 RUNASUSER=edureka; # <-- EDIT THIS LINE,
@@ -53,8 +56,9 @@ start() {
     echo "Application Service is already running (pid: ${pid})";
   else
     echo "Starting Application Service";
+    touch ${LOG_FILE}
     cd $MS_HOME
-    run_as ${RUNASUSER} java -jar ./${MS_JAR};
+    run_as ${RUNASUSER} java -jar ./${MS_JAR} >> ${CATALINA_OUT} 2>&1 &
   fi
   # return 0;
 }
