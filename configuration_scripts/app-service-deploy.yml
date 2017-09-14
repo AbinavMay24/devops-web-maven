@@ -36,7 +36,7 @@
         state: directory
       tags: createTempFolder
 
-    - name: start-date-time
+    - name: Capture Start Time
       shell: |
         echo "$(date +%s)" > starttimefile
       args:
@@ -67,7 +67,7 @@
       command: "nohup service {{ INIT_SCRIPT }} start"
       tags: startApplication
 
-    - name: Pause for 20 seconds to build app cache.
+    - name: Pause for 20 seconds
       pause:
         seconds: 20
       tags: waitTime
@@ -78,7 +78,7 @@
 #        chdir: "{{ TOMMEE_HOME }}/webapps/{{ APPLICATION_NAME }}/"
 #      tags: updateLastDeployed
 
-    - name: finish-date-time
+    - name: Calculate Duration
       shell: |
         finishtime=$(date +%s)
         starttime=`cat starttimefile`
@@ -90,7 +90,7 @@
       register: DURATION
       tags: calculateDuration
 
-    - name: delete-temp-folder
+    - name: Delete Temp Folder
       file:
         path: "{{ SHELL_RUN_PATH }}"
         state: absent
