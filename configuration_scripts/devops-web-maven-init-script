@@ -8,15 +8,20 @@
 ###############################################
 #=-= START OF CUSTOM SERVICE CONFIGURATION =-#
 # Where micro service war/jar file sits?
-MS_HOME=/home/edureka/devops
+HOME_DIR=/home/edureka/devops
 
-# Actual file name of Micro Service (jar or war),
+# Application Name (jar or war file name only)
+APPLICATION_FILE_NAME=devops-web-maven
+
+# Application File extension of Micro Service (jar or war),
+APPLICATION_FILE_EXTENSION=.jar
+
 # ms-service.war or something-0.0.1-SNAPSHOT.jar, etc.
-# ^^^ that should relative to MS_HOME directory.
-MS_JAR=devops-web-maven.jar
+# ^^^ that should relative to HOME_DIR directory.
+SERVICE_FULL_NAME=${APPLICATION_FILE_NAME}${APPLICATION_FILE_EXTENSION}
 
 # Log files location
-LOG_FILE="${MS_HOME}"/log-devops-web-maven.out
+LOG_FILE="${HOME_DIR}"/log-${APPLICATION_FILE_NAME}.out
 
 # Which username we should run as.
 RUNASUSER=edureka; # <-- EDIT THIS LINE,
@@ -31,7 +36,7 @@ SHUTDOWN_WAIT=20; # before issuing kill -9 on process.
 export PATH JAVA_HOME
 
 # Try to get PID of spring jar/war
-MS_PID=`ps fax|grep java|grep "${MS_JAR}"|awk '{print $1}'`
+MS_PID=`ps fax|grep java|grep "${SERVICE_FULL_NAME}"|awk '{print $1}'`
 export MS_PID;
 
 # Function: run_as
@@ -57,8 +62,8 @@ start() {
   else
     echo "Starting Application Service";
     touch ${LOG_FILE}
-    cd $MS_HOME
-    run_as ${RUNASUSER} java -jar ./${MS_JAR} >> ${LOG_FILE} 2>&1 &
+    cd $HOME_DIR
+    run_as ${RUNASUSER} java -jar ./${SERVICE_FULL_NAME} >> ${LOG_FILE} 2>&1 &
   fi
   # return 0;
 }
