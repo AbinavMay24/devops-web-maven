@@ -20,7 +20,7 @@ RUNASUSER=edureka; # <-- EDIT THIS LINE,
 # if port number for spring boot is < 1024 it needs root perm.
 
 JAVA_HOME=`which java`
-#/usr/lib/jvm/java-7-openjdk-amd64; # <-- EDIT THIS, Where is your JDK/JRE?
+#/usr/lib/jvm/java-8-openjdk-amd64; # <-- EDIT THIS, Where is your JDK/JRE?
 
 PATH=${JAVA_HOME}/bin:${PATH};
 SHUTDOWN_WAIT=20; # before issuing kill -9 on process.
