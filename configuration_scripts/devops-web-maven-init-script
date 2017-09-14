@@ -1,10 +1,10 @@
 #!/bin/bash
 
 ############## Instructions ###################
-# 1) Place this file say 'spring-boot-app' under /etc/init.d/ directory
-# 2) Then make it executable:  chmod +x /etc/init.d/<spring-boot-app>
+# 1) Place this file say 'spring-boot-app-script' under /etc/init.d/ directory
+# 2) Then make it executable:  chmod +x /etc/init.d/<spring-boot-app-script>
 # 3) Then use the process by doing something like below as user 'edureka' (configured as RUNASUSER in the script)
-#    service <spring-boot-app> start|stop|status
+#    service <spring-boot-app-script> start|stop|status
 ###############################################
 #=-= START OF CUSTOM SERVICE CONFIGURATION =-#
 # Where micro service war/jar file sits?
