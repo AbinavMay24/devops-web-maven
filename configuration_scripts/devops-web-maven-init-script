@@ -134,7 +134,7 @@ case $1 in
     ;;
   *)
     echo "`basename ${0}`
-      usage:    start|stop|restart"
+      usage:    start|stop|status"
     exit 1
     ;;
 esac
