@@ -170,12 +170,12 @@ try {
                         dir('devops-web-test-suite/') {
                             sh "'${antHome}/bin/ant'"
                             dir('build/') {
-                                sh "java -jar test_suite.jar"
+                                sh "java -jar test.jar"
                             }
                         }
                     } else {
                         dir('devops-web-test-suite\\build\\') {
-                            bat(/"java -jar test_suite.jar"/)
+                            bat(/"java -jar test.jar"/)
                         }
                     }
                 } catch (exc) {
