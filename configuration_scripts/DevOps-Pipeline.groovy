@@ -172,7 +172,7 @@ try {
                             dir('build/') {
                                 sh '''
                                     # Xvfb :99 -screen 0 1024x768x8 > /dev/null
-                                    java -jar test.jar LINUX FIREFOX
+                                    # java -jar test.jar LINUX FIREFOX
                                     java -jar test.jar LINUX CHROME
                                 '''
                             }
@@ -183,7 +183,7 @@ try {
                         }
                     }
                 } catch (exc) {
-                    error "Failure in Create Test Suite stage: ${exc}"
+                    error "Failure in Build and Run Test Suite stage: ${exc}"
                 }
             }
         }
