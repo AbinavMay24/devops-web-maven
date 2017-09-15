@@ -170,12 +170,12 @@ try {
                         dir('devops-web-test-suite/') {
                             sh "'${antHome}/bin/ant'"
                             dir('build/') {
-                                sh "java -jar test.jar"
+                                sh "java -jar test.jar LINUX FIREFOX"
                             }
                         }
                     } else {
                         dir('devops-web-test-suite\\build\\') {
-                            bat(/"java -jar test.jar"/)
+                            bat(/"java -jar test.jar WINDOWS FIREFOX"/)
                         }
                     }
                 } catch (exc) {
