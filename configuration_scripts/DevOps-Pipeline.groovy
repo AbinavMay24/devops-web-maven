@@ -167,7 +167,7 @@ try {
             if (isSeleniumTestingEnabled) {
                 try {
                     if (isUnix()) {
-                        dir('devops-web-test-suite/build/') {
+                        dir('devops-web-test-suite/') {
                             sh "'${antHome}/bin/ant'"
                             dir('build/') {
                                 sh "java -jar test_suite.jar"
