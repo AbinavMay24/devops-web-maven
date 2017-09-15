@@ -168,7 +168,7 @@ try {
                 try {
                     if (isUnix()) {
                         dir('devops-web-test-suite/build/') {
-                            sh "'${antHome}/bin/ant"
+                            sh "'${antHome}/bin/ant'"
                             dir('build/') {
                                 sh "java -jar test_suite.jar"
                             }
