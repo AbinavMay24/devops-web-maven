@@ -169,6 +169,10 @@ try {
                     if (isUnix()) {
                         dir('devops-web-test-suite/') {
                             sh "'${antHome}/bin/ant'"
+                            sh ''' 
+                                chown -R jenkins:jenkins *
+                                chmod 777 -R *
+                            '''
                             dir('build/') {
                                 sh '''
                                     # Xvfb :99 -screen 0 1024x768x8 > /dev/null
