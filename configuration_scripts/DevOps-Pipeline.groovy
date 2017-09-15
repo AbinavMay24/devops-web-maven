@@ -122,7 +122,7 @@ try {
 
         stage('Checkout') {
             try {
-                //cleanWs() // cleanup workspace before build starts
+                cleanWs() // cleanup workspace before build starts
 
                 // Checkout codes from repository
                 dir('devops-web-maven') {
