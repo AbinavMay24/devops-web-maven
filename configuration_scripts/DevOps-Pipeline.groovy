@@ -24,6 +24,7 @@ try {
         def isAnalysisEnabled = params.IS_ANALYSIS_ENABLED // Enable if you want to analyze code with sonarqube
         def isDeploymentEnabled = params.IS_DEPLOYMENT_ENABLED // Enable if you want to deploy code on app server
         def isReportsEnabled = params.IS_REPORTS_ENABLED // Enable if you want to generate reports
+        def isSeleniumTestingEnabled = params.IS_SELENIUM_TESTING_ENABLED // Enable if you want to generate reports
 
         def appName = 'devops-web-maven'// application name currently in progress
         def appEnv  // application environment currently in progress
@@ -128,6 +129,14 @@ try {
                     git url: 'https://github.com/veersudhir83/devops-web-maven.git',
                             branch: 'master'
                 }
+
+                if (isSeleniumTestingEnabled) {
+                    dir('devops-web-test-suite') {
+                        git url: 'https://github.com/veersudhir83/devops-web-test_suite.git',
+                                branch: 'master'
+                    }
+                }
+
                 dir('downloadsFromArtifactory') {
                     // created folder for artifactory
                 }
@@ -151,6 +160,24 @@ try {
                 }
             } catch (exc) {
                 error "Failure in Build stage: ${exc}"
+            }
+        }
+
+        stage('Create Test Suite') {
+            if (isSeleniumTestingEnabled) {
+                try {
+                    if (isUnix()) {
+                        dir('devops-web-test-suite/') {
+                            sh "'${antHome}' make"
+                        }
+                    } else {
+                        dir('devops-web-test-suite\\') {
+                            bat(/"${antHome}" make/)
+                        }
+                    }
+                } catch (exc) {
+                    error "Failure in Create Test Suite stage: ${exc}"
+                }
             }
         }
 

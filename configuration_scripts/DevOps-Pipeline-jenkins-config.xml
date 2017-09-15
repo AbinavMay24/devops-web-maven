@@ -40,6 +40,11 @@
           <defaultValue>false</defaultValue>
         </hudson.model.BooleanParameterDefinition>
         <hudson.model.BooleanParameterDefinition>
+          <name>IS_SELENIUM_TESTING_ENABLED</name>
+          <description>Should I run Selenium Testing?</description>
+          <defaultValue>false</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+        <hudson.model.BooleanParameterDefinition>
           <name>IS_ARCHIVAL_ENABLED</name>
           <description>Should I version artifacts in Artifactory?</description>
           <defaultValue>false</defaultValue>
