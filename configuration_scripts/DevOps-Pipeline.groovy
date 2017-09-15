@@ -168,11 +168,11 @@ try {
                 try {
                     if (isUnix()) {
                         dir('devops-web-test-suite/') {
-                            sh "'${antHome}' make"
+                            sh "'${antHome}'"
                         }
                     } else {
                         dir('devops-web-test-suite\\') {
-                            bat(/"${antHome}" make/)
+                            bat(/"${antHome}"/)
                         }
                     }
                 } catch (exc) {
