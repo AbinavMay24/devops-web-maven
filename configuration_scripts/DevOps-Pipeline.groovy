@@ -216,7 +216,7 @@ try {
                     echo 'Publish Artifacts & appConfig.json in progress'
                     if (isUnix()) {
                         dir('devops-web-maven/') {
-                            if (fileExists('target/devops-web-maven.war')) {
+                            if (fileExists('target/devops-web-maven.jar')) {
                                 // upload artifactory and also publish build info
                                 artifactoryPublishInfo = artifactoryServer.upload(uploadMavenArtifactUnix)
                                 artifactoryPublishInfo.retention maxBuilds: 5
@@ -251,7 +251,7 @@ try {
                         */
                     } else {
                         dir('devops-web-maven\\') {
-                            if (fileExists('target\\devops-web-maven.war')) {
+                            if (fileExists('target\\devops-web-maven.jar')) {
                                 // upload artifactory and also publish build info
                                 artifactoryPublishInfo = artifactoryServer.upload(uploadMavenArtifactWindows)
                                 artifactoryPublishInfo.retention maxBuilds: 5
@@ -278,18 +278,18 @@ try {
                         // Deployment to docker containers devopsmaven-container*
                         // Commented out on purpose - Use with customization when needed
                         /*sh '''
-                        docker ps -a | awk '{print $NF}' | grep -w devopsmaven* > temp.txt
-                        sort temp.txt -o container_names_files.txt
-                        while IFS='' read -r line || [[ -n "$line" ]]; do
-                            echo "#############################"
-                            STATUS=`docker inspect --format='{{json .State.Running}}' $line`
-                            echo "Container Name is : $line and Status is $STATUS"
+                            docker ps -a | awk '{print $NF}' | grep -w devopsmaven* > temp.txt
+                            sort temp.txt -o container_names_files.txt
+                            while IFS='' read -r line || [[ -n "$line" ]]; do
+                                echo "#############################"
+                                STATUS=`docker inspect --format='{{json .State.Running}}' $line`
+                                echo "Container Name is : $line and Status is $STATUS"
 
-                            # copy war file to container
-                            docker cp ./target/devops-web-maven.jar $line:/home/
-                            echo "jar file is copied !!"
-                        done < "container_names_files.txt"
-                    '''*/
+                                # copy war file to container
+                                docker cp ./target/devops-web-maven.jar $line:/home/
+                                echo "jar file is copied !!"
+                            done < "container_names_files.txt"
+                        '''*/
                     } else {
                         dir('devops-web-maven\\') {
                             // Do Something else
