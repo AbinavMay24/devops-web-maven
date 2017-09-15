@@ -170,7 +170,10 @@ try {
                         dir('devops-web-test-suite/') {
                             sh "'${antHome}/bin/ant'"
                             dir('build/') {
-                                sh "java -jar test.jar LINUX FIREFOX"
+                                sh '''
+                                    Xvfb :99 -screen 0 1024x768x8 &gt;&amp; /dev/null &amp;
+                                    java -jar test.jar LINUX FIREFOX
+                                '''
                             }
                         }
                     } else {
