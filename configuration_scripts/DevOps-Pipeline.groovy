@@ -132,7 +132,7 @@ try {
 
                 if (isSeleniumTestingEnabled) {
                     dir('devops-web-test-suite') {
-                        git url: 'https://github.com/veersudhir83/devops-web-test_suite.git',
+                        git url: 'https://github.com/veersudhir83/devops-web-test-suite.git',
                                 branch: 'master'
                     }
                 }
