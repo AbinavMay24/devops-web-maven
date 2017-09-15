@@ -163,16 +163,16 @@ try {
             }
         }
 
-        stage('Create Test Suite') {
+        stage('Run Test Suite') {
             if (isSeleniumTestingEnabled) {
                 try {
                     if (isUnix()) {
-                        dir('devops-web-test-suite/') {
-                            sh "'${antHome}'"
+                        dir('devops-web-test-suite/build/') {
+                            sh "java -jar test_suite.jar"
                         }
                     } else {
-                        dir('devops-web-test-suite\\') {
-                            bat(/"${antHome}"/)
+                        dir('devops-web-test-suite\\build\\') {
+                            bat(/"java -jar test_suite.jar"/)
                         }
                     }
                 } catch (exc) {
