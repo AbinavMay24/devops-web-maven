@@ -197,7 +197,7 @@ try {
                 if (isAnalysisEnabled) {
                     if (isUnix()) {
                         dir('devops-web-maven/') {
-                            sh "'${mvnHome}/bin/mvn' -P metrics pmd:pmd javadoc:javadoc" //sonar:sonar
+                            sh "'${mvnHome}/bin/mvn' -P metrics pmd:pmd javadoc:javadoc sonar:sonar"
                         }
                     } else {
                         dir('devops-web-maven\\') {
