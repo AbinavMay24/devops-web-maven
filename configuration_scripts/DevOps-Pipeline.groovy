@@ -16,12 +16,13 @@ properties(projectProperties)
 try {
     node {
         def mvnHome
+        def mvnAnalysisTargets = '-P metrics pmd:pmd javadoc:javadoc sonar:sonar'
         def antHome
         def artifactoryPublishInfo
         def artifactoryDownloadInfo
         def artifactoryServer
         def isArchivalEnabled = params.IS_ARCHIVAL_ENABLED // Enable if you want to archive files and configs to artifactory
-        def isAnalysisEnabled = params.IS_ANALYSIS_ENABLED // Enable if you want to analyze code with sonarqube
+        def isSonarAnalysisEnabled = params.IS_ANALYSIS_ENABLED // Enable if you want to analyze code with sonarqube
         def isDeploymentEnabled = params.IS_DEPLOYMENT_ENABLED // Enable if you want to deploy code on app server
         def isReportsEnabled = params.IS_REPORTS_ENABLED // Enable if you want to generate reports
         def isSeleniumTestingEnabled = params.IS_SELENIUM_TESTING_ENABLED // Enable if you want to generate reports
@@ -112,7 +113,7 @@ try {
                 antHome = tool name: 'ant1.9.6', type: 'ant'
                 ansible = tool name: 'ansible1.5', type: 'org.jenkinsci.plugins.ansible.AnsibleInstallation'
 
-                if (isAnalysisEnabled) {
+                if (isSonarAnalysisEnabled) {
                     sonarHome = tool name: 'sonar-scanner-3.0.3.778', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                 }
             } catch (exc) {
@@ -194,15 +195,16 @@ try {
 
         stage('Analysis') {
             try {
-                if (isAnalysisEnabled) {
-                    if (isUnix()) {
-                        dir('devops-web-maven/') {
-                            sh "'${mvnHome}/bin/mvn' -P metrics pmd:pmd javadoc:javadoc sonar:sonar"
-                        }
-                    } else {
-                        dir('devops-web-maven\\') {
-                            bat(/"${mvnHome}\bin\mvn" --batch-mode -P metrics pmd:pmd javadoc:javadoc sonar:sonar /)
-                        }
+                if (isSonarAnalysisEnabled) {
+                    mvnAnalysisTargets = $ { mvnAnalysisTargets } + " sonar:sonar"
+                }
+                if (isUnix()) {
+                    dir('devops-web-maven/') {
+                        sh "'${mvnHome}/bin/mvn' ${mvnAnalysisTargets}"
+                    }
+                } else {
+                    dir('devops-web-maven\\') {
+                        bat(/"${mvnHome}\bin\mvn" --batch-mode ${mvnAnalysisTargets} /)
                     }
                 }
             } catch (exc) {
