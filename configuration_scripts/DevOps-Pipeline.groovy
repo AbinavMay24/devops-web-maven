@@ -16,7 +16,7 @@ properties(projectProperties)
 try {
     node {
         def mvnHome
-        def mvnAnalysisTargets = '-P metrics pmd:pmd javadoc:javadoc sonar:sonar'
+        def mvnAnalysisTargets = '-P metrics pmd:pmd javadoc:javadoc'
         def antHome
         def artifactoryPublishInfo
         def artifactoryDownloadInfo
