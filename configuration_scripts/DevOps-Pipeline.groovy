@@ -196,7 +196,7 @@ try {
         stage('Analysis') {
             try {
                 if (isSonarAnalysisEnabled) {
-                    mvnAnalysisTargets = $ { mvnAnalysisTargets } + " sonar:sonar"
+                    mvnAnalysisTargets = "${mvnAnalysisTargets} sonar:sonar"
                 }
                 if (isUnix()) {
                     dir('devops-web-maven/') {
