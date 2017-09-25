@@ -62,6 +62,13 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.codehaus.mojo/findbugs-maven-plugin -->
+		<dependency>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>findbugs-maven-plugin</artifactId>
+			<version>${findbugs.version}</version>
+		</dependency>
 		
 	</dependencies>
 
@@ -71,11 +78,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>${findbugs.version}</version>
-			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -161,15 +164,6 @@
 						</configuration>
 					</plugin>
 
-					<!-- FINDBUGS -->
-					<plugin>
-						<artifactId>findbugs-maven-plugin</artifactId>
-						<version>${findbugs.version}</version>
-						<configuration>
-							<effort>Max</effort>
-							<xmlOutput>true</xmlOutput>
-						</configuration>
-					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -303,21 +297,6 @@
                     <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
                 </configuration>
             </plugin>
-
-            <!--
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-				<version>${cobertura.version}</version>
-                <configuration>
-                    <formats>
-                        <format>xml</format>
-                    </formats>
-                    <check/>
-                </configuration>
-            </plugin>
-            -->
-
         </plugins>
     </reporting>
 
