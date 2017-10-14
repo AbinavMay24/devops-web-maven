@@ -2,6 +2,8 @@
 
 /**
  * @ Maintainer sudheer veeravalli<veersudhir83@gmail.com>
+ * Plugins Needed in Jenkins: Ant, Maven, Ansible, Artifactory, SonarQube,
+ * PMD, JUnit, Jacoco, HTML Publisher,
  */
 
 /* Only keep the 10 most recent builds. */
