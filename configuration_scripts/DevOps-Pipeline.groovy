@@ -42,6 +42,16 @@ try {
         def sonarHome
         def SONAR_HOST_URL = 'http://localhost:9000'
 
+        // Logic for Slack Notification Service
+        def slackBaseUrl = 'https://defaultgrouptalk.slack.com/services/hooks/jenkins-ci/'
+        def slackChannel = '#general'
+        def slackTeamDomain = 'defaultgrouptalk'
+        def slackMessagePrefix = "Job:Build ${env.JOB_NAME}:${env.BUILD_NUMBER}"
+        def slackTokenCredentialId = 'ecd292a7-bf0e-45c9-b599-aeb317ce2170' // replace with right one from jenkins credentials details
+
+        // color can be good, warning, danger or anything
+        slackSend baseUrl: "${slackBaseUrl}", channel: "${slackChannel}", color: "good", message: "${slackMessagePrefix} -> Started", teamDomain: "${slackTeamDomain}", tokenCredentialId: "${slackTokenCredentialId}"
+
 
         if (isArchivalEnabled) {
             // Artifactory server id configured in the jenkins along with credentials
@@ -172,7 +182,7 @@ try {
                     if (isUnix()) {
                         dir('devops-web-test-suite/') {
                             sh "'${antHome}/bin/ant'"
-                            sh ''' 
+                            sh '''
                                 chown -R jenkins:jenkins *
                                 chmod 777 -R *
                             '''
