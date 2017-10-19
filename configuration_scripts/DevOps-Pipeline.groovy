@@ -46,11 +46,11 @@ try {
         def slackBaseUrl = 'https://defaultgrouptalk.slack.com/services/hooks/jenkins-ci/'
         def slackChannel = '#general'
         def slackTeamDomain = 'defaultgrouptalk'
-        def slackMessagePrefix = "Job:Build ${env.JOB_NAME}:${env.BUILD_NUMBER}"
+        def slackMessagePrefix = "Job ${env.JOB_NAME}:${env.BUILD_NUMBER}"
         def slackTokenCredentialId = 'ecd292a7-bf0e-45c9-b599-aeb317ce2170' // replace with right one from jenkins credentials details
 
         // color can be good, warning, danger or anything
-        slackSend baseUrl: "${slackBaseUrl}", channel: "${slackChannel}", color: "good", message: "${slackMessagePrefix} -> Started", teamDomain: "${slackTeamDomain}", tokenCredentialId: "${slackTokenCredentialId}"
+        slackSend baseUrl: "${slackBaseUrl}", channel: "${slackChannel}", color: "good", message: "${slackMessagePrefix} -> Build Started", teamDomain: "${slackTeamDomain}", tokenCredentialId: "${slackTokenCredentialId}"
 
 
         if (isArchivalEnabled) {
@@ -114,6 +114,8 @@ try {
         }"""
 
         stage('Tool Setup'){
+
+            slackSend color: "good", message: "${slackMessagePrefix} -> Tool Setup Started"
             // ** NOTE: These tools must be configured in the jenkins global configuration.
             try {
                 if (isUnix()) {
@@ -130,6 +132,7 @@ try {
                 }
             } catch (exc) {
                 error "Failure in Tool Setup stage: ${exc}"
+                slackSend color: "danger", message: "${slackMessagePrefix} -> Tool Setup Failed"
             }
         }
 
