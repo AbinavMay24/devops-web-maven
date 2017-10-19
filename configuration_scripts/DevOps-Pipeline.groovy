@@ -115,7 +115,6 @@ try {
 
         stage('Tool Setup'){
 
-            slackSend color: "good", message: "${slackMessagePrefix} -> Tool Setup Started"
             // ** NOTE: These tools must be configured in the jenkins global configuration.
             try {
                 if (isUnix()) {
@@ -130,6 +129,8 @@ try {
                 if (isSonarAnalysisEnabled) {
                     sonarHome = tool name: 'sonar-scanner-3.0.3.778', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                 }
+                slackSend color: "good", message: "${slackMessagePrefix} -> Tool Setup Complete"
+
             } catch (exc) {
                 error "Failure in Tool Setup stage: ${exc}"
                 slackSend color: "danger", message: "${slackMessagePrefix} -> Tool Setup Failed"
@@ -156,8 +157,11 @@ try {
                 dir('downloadsFromArtifactory') {
                     // created folder for artifactory
                 }
+
+                slackSend color: "good", message: "${slackMessagePrefix} -> Checkout Complete"
             } catch (exc) {
                 error "Failure in Checkout stage: ${exc}"
+                slackSend color: "danger", message: "${slackMessagePrefix} -> Checkout Failed"
             }
         }
 
@@ -174,8 +178,10 @@ try {
                         bat(/copy .\\target\\\u0024{appName}*.\u0024{artifactExtension} .\\target\\\u0024{appName}.\u0024{artifactExtension}/)
                     }
                 }
+                slackSend color: "good", message: "${slackMessagePrefix} -> Build Complete"
             } catch (exc) {
                 error "Failure in Build stage: ${exc}"
+                slackSend color: "danger", message: "${slackMessagePrefix} -> Build Failed"
             }
         }
 
@@ -202,8 +208,10 @@ try {
                             bat(/"java -jar test.jar WINDOWS FIREFOX"/)
                         }
                     }
+                    slackSend color: "good", message: "${slackMessagePrefix} -> Test Suite Run Complete"
                 } catch (exc) {
                     error "Failure in Build and Run Test Suite stage: ${exc}"
+                    slackSend color: "danger", message: "${slackMessagePrefix} -> Test Suite Run Failed"
                 }
             }
         }
@@ -222,8 +230,10 @@ try {
                         bat(/"${mvnHome}\bin\mvn" --batch-mode ${mvnAnalysisTargets} /)
                     }
                 }
+                slackSend color: "good", message: "${slackMessagePrefix} -> Analysis Complete"
             } catch (exc) {
                 error "Failure in Analysis stage: ${exc}"
+                slackSend color: "danger", message: "${slackMessagePrefix} -> Analysis Failed"
             }
         }
 
@@ -280,8 +290,10 @@ try {
                         }
                     }
                 }
+                slackSend color: "good", message: "${slackMessagePrefix} -> Archival Complete"
             } catch (exc) {
                 error "Failure in Publish stage: ${exc}"
+                slackSend color: "danger", message: "${slackMessagePrefix} -> Archival Failed"
             }
         }
 
@@ -312,8 +324,10 @@ try {
                             // Do Something else
                         }
                     }
+                    slackSend color: "good", message: "${slackMessagePrefix} -> Deployment Complete"
                 } catch (exc) {
                     error "Failure in Deployment stage: ${exc}"
+                    slackSend color: "danger", message: "${slackMessagePrefix} -> Deployment Failed"
                 }
             }
         }
@@ -330,8 +344,10 @@ try {
                         junit '**\\devops-web-maven\\target\\surefire-reports\\*.xml'
                         publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'devops-web-maven\\target\\site\\apidocs', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
                     }
+                    slackSend color: "good", message: "${slackMessagePrefix} -> Generate Reports Complete"
                 } catch (exc) {
                     error "Failure in Generate Reports stage: ${exc}"
+                    slackSend color: "warning", message: "${slackMessagePrefix} -> Generate Reports Failed"
                 }
             }
         }
