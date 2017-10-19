@@ -132,8 +132,8 @@ try {
                 slackSend color: "good", message: "${slackMessagePrefix} -> Tool Setup Complete"
 
             } catch (exc) {
-                error "Failure in Tool Setup stage: ${exc}"
                 slackSend color: "danger", message: "${slackMessagePrefix} -> Tool Setup Failed"
+                error "Failure in Tool Setup stage: ${exc}"
             }
         }
 
@@ -160,8 +160,8 @@ try {
 
                 slackSend color: "good", message: "${slackMessagePrefix} -> Checkout Complete"
             } catch (exc) {
-                error "Failure in Checkout stage: ${exc}"
                 slackSend color: "danger", message: "${slackMessagePrefix} -> Checkout Failed"
+                error "Failure in Checkout stage: ${exc}"
             }
         }
 
@@ -180,8 +180,8 @@ try {
                 }
                 slackSend color: "good", message: "${slackMessagePrefix} -> Build Complete"
             } catch (exc) {
-                error "Failure in Build stage: ${exc}"
                 slackSend color: "danger", message: "${slackMessagePrefix} -> Build Failed"
+                error "Failure in Build stage: ${exc}"
             }
         }
 
@@ -210,8 +210,8 @@ try {
                     }
                     slackSend color: "good", message: "${slackMessagePrefix} -> Test Suite Run Complete"
                 } catch (exc) {
-                    error "Failure in Build and Run Test Suite stage: ${exc}"
                     slackSend color: "danger", message: "${slackMessagePrefix} -> Test Suite Run Failed"
+                    error "Failure in Build and Run Test Suite stage: ${exc}"
                 }
             }
         }
@@ -232,8 +232,8 @@ try {
                 }
                 slackSend color: "good", message: "${slackMessagePrefix} -> Analysis Complete"
             } catch (exc) {
-                error "Failure in Analysis stage: ${exc}"
                 slackSend color: "danger", message: "${slackMessagePrefix} -> Analysis Failed"
+                error "Failure in Analysis stage: ${exc}"
             }
         }
 
@@ -292,8 +292,8 @@ try {
                 }
                 slackSend color: "good", message: "${slackMessagePrefix} -> Archival Complete"
             } catch (exc) {
-                error "Failure in Publish stage: ${exc}"
                 slackSend color: "danger", message: "${slackMessagePrefix} -> Archival Failed"
+                error "Failure in Publish stage: ${exc}"
             }
         }
 
@@ -326,8 +326,8 @@ try {
                     }
                     slackSend color: "good", message: "${slackMessagePrefix} -> Deployment Complete"
                 } catch (exc) {
-                    error "Failure in Deployment stage: ${exc}"
                     slackSend color: "danger", message: "${slackMessagePrefix} -> Deployment Failed"
+                    error "Failure in Deployment stage: ${exc}"
                 }
             }
         }
@@ -346,8 +346,8 @@ try {
                     }
                     slackSend color: "good", message: "${slackMessagePrefix} -> Generate Reports Complete"
                 } catch (exc) {
-                    error "Failure in Generate Reports stage: ${exc}"
                     slackSend color: "warning", message: "${slackMessagePrefix} -> Generate Reports Failed"
+                    error "Failure in Generate Reports stage: ${exc}"
                 }
             }
         }
