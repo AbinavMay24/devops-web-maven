@@ -185,36 +185,6 @@ try {
             }
         }
 
-        stage('Build and Run Test Suite') {
-            if (isSeleniumTestingEnabled) {
-                try {
-                    if (isUnix()) {
-                        dir('devops-web-test-suite/build/') {
-                            sh "'${antHome}/bin/ant'"
-                            sh '''
-                                chown -R jenkins:jenkins *
-                                chmod 777 -R *
-						    '''
-							wrap([$class: 'Xvfb', additionalOptions: '', assignedLabels: '', displayName: 0, displayNameOffset: 99, installationName: 'Default', screen: '1024x768x8', timeout: 20]) {
-								sh '''
-								    # Xvfb :99 -screen 0 1024x768x8 > /dev/null
-	                                java -jar test.jar LINUX FIREFOX
-	                            '''
-                            }
-                        }
-                    } else {
-                        dir('devops-web-test-suite\\build\\') {
-                            bat(/"java -jar test.jar WINDOWS FIREFOX"/)
-                        }
-                    }
-                    slackSend color: "good", message: "${slackMessagePrefix} -> Test Suite Run Complete"
-                } catch (exc) {
-                    slackSend color: "danger", message: "${slackMessagePrefix} -> Test Suite Run Failed"
-                    error "Failure in Build and Run Test Suite stage: ${exc}"
-                }
-            }
-        }
-
         stage('Analysis') {
             try {
                 if (isSonarAnalysisEnabled) {
@@ -330,6 +300,36 @@ try {
                 }
             }
         }
+		
+		stage('Build and Run Test Suite') {
+			if (isSeleniumTestingEnabled) {
+				try {
+					if (isUnix()) {
+						dir('devops-web-test-suite/build/') {
+							sh "'${antHome}/bin/ant'"
+							sh '''
+                                chown -R jenkins:jenkins *
+                                chmod 777 -R *
+						    '''
+							wrap([$class: 'Xvfb', additionalOptions: '', assignedLabels: '', displayName: 99, displayNameOffset: 0, installationName: 'Default', screen: '1024x768x8', timeout: 20]) {
+								sh '''
+								    # Xvfb :99 -screen 0 1024x768x8 > /dev/null
+	                                java -jar test.jar LINUX FIREFOX
+	                            '''
+							}
+						}
+					} else {
+						dir('devops-web-test-suite\\build\\') {
+							bat(/"java -jar test.jar WINDOWS FIREFOX"/)
+						}
+					}
+					slackSend color: "good", message: "${slackMessagePrefix} -> Test Suite Run Complete"
+				} catch (exc) {
+					slackSend color: "danger", message: "${slackMessagePrefix} -> Test Suite Run Failed"
+					error "Failure in Build and Run Test Suite stage: ${exc}"
+				}
+			}
+		}
 
         stage('Generate Reports') {
             if (isReportsEnabled) {
