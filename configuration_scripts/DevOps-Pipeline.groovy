@@ -194,10 +194,13 @@ try {
                             sh '''
                                 chown -R jenkins:jenkins *
                                 chmod 777 -R *
-                                Xvfb :99 -screen 0 1024x768x8 > /dev/null
-                                java -jar test.jar LINUX FIREFOX
-                            '''
-                        }
+						    '''
+							wrap([$class: 'Xvfb', additionalOptions: '', assignedLabels: '', displayName: 0, displayNameOffset: 99, installationName: 'Default', screen: '1024x768x8', timeout: 20]) {
+								sh '''
+								    # Xvfb :99 -screen 0 1024x768x8 > /dev/null
+	                                java -jar test.jar LINUX FIREFOX
+	                            '''
+                            }
                         }
                     } else {
                         dir('devops-web-test-suite\\build\\') {
