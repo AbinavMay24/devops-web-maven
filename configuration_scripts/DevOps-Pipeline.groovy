@@ -26,8 +26,8 @@ try {
         def isArchivalEnabled = params.IS_ARCHIVAL_ENABLED // Enable if you want to archive files and configs to artifactory
         def isSonarAnalysisEnabled = params.IS_ANALYSIS_ENABLED // Enable if you want to analyze code with sonarqube
         def isDeploymentEnabled = params.IS_DEPLOYMENT_ENABLED // Enable if you want to deploy code on app server
+		def isSeleniumTestingEnabled = params.IS_SELENIUM_TESTING_ENABLED // Enable if you want to generate reports
         def isReportsEnabled = params.IS_REPORTS_ENABLED // Enable if you want to generate reports
-        def isSeleniumTestingEnabled = params.IS_SELENIUM_TESTING_ENABLED // Enable if you want to generate reports
 
         def appName = 'devops-web-maven'// application name currently in progress
         def appEnv  // application environment currently in progress
@@ -314,7 +314,7 @@ try {
 							wrap([$class: 'Xvfb', additionalOptions: '', assignedLabels: '', displayName: 99, displayNameOffset: 0, installationName: 'Default', screen: '1024x768x8', timeout: 20]) {
 								sh '''
 								    # Xvfb :99 -screen 0 1024x768x8 > /dev/null
-	                                java -jar test.jar LINUX FIREFOX
+	                                java -jar test.jar LINUX CHROME
 	                            '''
 							}
 						}
