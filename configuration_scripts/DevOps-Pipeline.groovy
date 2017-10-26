@@ -189,19 +189,15 @@ try {
             if (isSeleniumTestingEnabled) {
                 try {
                     if (isUnix()) {
-                        dir('devops-web-test-suite/') {
+                        dir('devops-web-test-suite/build/') {
                             sh "'${antHome}/bin/ant'"
                             sh '''
                                 chown -R jenkins:jenkins *
                                 chmod 777 -R *
+                                Xvfb :99 -screen 0 1024x768x8 > /dev/null
+                                java -jar test.jar LINUX FIREFOX
                             '''
-                            dir('build/') {
-                                sh '''
-                                    # Xvfb :99 -screen 0 1024x768x8 > /dev/null
-                                    # java -jar test.jar LINUX FIREFOX
-                                    java -jar test.jar LINUX CHROME
-                                '''
-                            }
+                        }
                         }
                     } else {
                         dir('devops-web-test-suite\\build\\') {
@@ -336,13 +332,13 @@ try {
             if (isReportsEnabled) {
                 try {
                     if (isUnix()) {
-                        jacoco()
+                        //jacoco()
                         junit '**/devops-web-maven/target/surefire-reports/*.xml'
-                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'devops-web-maven/target/site/apidocs', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
+                        //publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'devops-web-maven/target/site/apidocs', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
                     } else {
-                        jacoco()
+                        //jacoco()
                         junit '**\\devops-web-maven\\target\\surefire-reports\\*.xml'
-                        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'devops-web-maven\\target\\site\\apidocs', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
+                        //publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'devops-web-maven\\target\\site\\apidocs', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: ''])
                     }
                     slackSend color: "good", message: "${slackMessagePrefix} -> Generate Reports Complete"
                 } catch (exc) {
