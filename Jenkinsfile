@@ -49,7 +49,7 @@ try {
 
 
         // Artifactory server id configured in the jenkins along with credentials
-        artifactoryServer = Artifactory.server 'ArtifactoryOSS-5.4.3'
+        artifactoryServer = Artifactory.server 'Artifactory-OSS-5.4.3'
         
         // to download appConfig.json files from artifactory
         def downloadAppConfigUnix = """{
