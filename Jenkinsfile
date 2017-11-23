@@ -124,7 +124,7 @@ try {
                 }
                 mvnHome = tool name: 'mvn3.3.9', type: 'maven'
                 antHome = tool name: 'ant1.9.8', type: 'ant'
-                ansible = tool name: 'ansible1.5', type: 'org.jenkinsci.plugins.ansible.AnsibleInstallation'
+                //ansible = tool name: 'ansible1.5', type: 'org.jenkinsci.plugins.ansible.AnsibleInstallation'
 
                 if (isSonarAnalysisEnabled) {
                     sonarHome = tool name: 'sonar-scanner-3.0.3.778', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
@@ -271,23 +271,10 @@ try {
                 echo 'Deploy application using ansible'
                 try {
                     if (isUnix()) {
-                        ansiblePlaybook installation: 'ansible1.5', playbook: 'devops-web-maven/configuration_scripts/app-service-deploy.yml'
-
-                        // Deployment to docker containers devopsmaven-container*
-                        // Commented out on purpose - Use with customization when needed
-                        /*sh '''
-                            docker ps -a | awk '{print $NF}' | grep -w devopsmaven* > temp.txt
-                            sort temp.txt -o container_names_files.txt
-                            while IFS='' read -r line || [[ -n "$line" ]]; do
-                                echo "#############################"
-                                STATUS=`docker inspect --format='{{json .State.Running}}' $line`
-                                echo "Container Name is : $line and Status is $STATUS"
-
-                                # copy war file to container
-                                docker cp ./target/devops-web-maven.jar $line:/home/
-                                echo "jar file is copied !!"
-                            done < "container_names_files.txt"
-                        '''*/
+                        //ansiblePlaybook installation: 'ansible1.5', playbook: 'devops-web-maven/configuration_scripts/app-service-deploy.yml'
+			dir('devops-web-maven/configuration_scripts/') {
+			  sh "ansible-playbook app-service-deploy.yml -i mediconnekt_hosts"
+			}                       
                     } else {
                         dir('devops-web-maven\\') {
                             // Do Something else
