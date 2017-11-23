@@ -23,12 +23,7 @@ try {
         def artifactoryPublishInfo
         def artifactoryDownloadInfo
         def artifactoryServer
-        def isArchivalEnabled = true // params.IS_ARCHIVAL_ENABLED // Enable if you want to archive files and configs to artifactory
-        def isSonarAnalysisEnabled = true // params.IS_ANALYSIS_ENABLED // Enable if you want to analyze code with sonarqube
-        def isDeploymentEnabled = true // params.IS_DEPLOYMENT_ENABLED // Enable if you want to deploy code on app server
-	def isSeleniumTestingEnabled = true // params.IS_SELENIUM_TESTING_ENABLED // Enable if you want to generate reports
-        def isReportsEnabled = true // params.IS_REPORTS_ENABLED // Enable if you want to generate reports
-
+        
         def appName = 'devops-web-maven'// application name currently in progress
         def appEnv  // application environment currently in progress
         def artifactName = appName // name of the war/jar/ear in artifactory
@@ -53,11 +48,9 @@ try {
         slackSend baseUrl: "${slackBaseUrl}", channel: "${slackChannel}", color: "good", message: "${slackMessagePrefix} -> Build Started", teamDomain: "${slackTeamDomain}", tokenCredentialId: "${slackTokenCredentialId}"
 
 
-        if (isArchivalEnabled) {
-            // Artifactory server id configured in the jenkins along with credentials
-            artifactoryServer = Artifactory.server 'ArtifactoryOSS-5.4.3'
-        }
-
+        // Artifactory server id configured in the jenkins along with credentials
+        artifactoryServer = Artifactory.server 'ArtifactoryOSS-5.4.3'
+        
         // to download appConfig.json files from artifactory
         def downloadAppConfigUnix = """{
             "files": [
@@ -124,13 +117,8 @@ try {
                 }
                 mvnHome = tool name: 'mvn3.3.9', type: 'maven'
                 antHome = tool name: 'ant1.9.8', type: 'ant'
-                //ansible = tool name: 'ansible1.5', type: 'org.jenkinsci.plugins.ansible.AnsibleInstallation'
-
-                if (isSonarAnalysisEnabled) {
-                    sonarHome = tool name: 'sonar-scanner-3.0.3.778', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-                }
+                sonarHome = tool name: 'sonar-scanner-3.0.3.778', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                 slackSend color: "good", message: "${slackMessagePrefix} -> Tool Setup Complete"
-
             } catch (exc) {
                 slackSend color: "danger", message: "${slackMessagePrefix} -> Tool Setup Failed"
                 error "Failure in Tool Setup stage: ${exc}"
@@ -187,9 +175,7 @@ try {
 
         stage('Analysis') {
             try {
-                if (isSonarAnalysisEnabled) {
-                    mvnAnalysisTargets = "${mvnAnalysisTargets} sonar:sonar"
-                }
+                mvnAnalysisTargets = "${mvnAnalysisTargets} sonar:sonar"
                 if (isUnix()) {
                     dir('devops-web-maven/') {
                         sh "'${mvnHome}/bin/mvn' ${mvnAnalysisTargets}"
@@ -208,58 +194,33 @@ try {
 
         stage('Publish') {
             try {
-                if (isArchivalEnabled) {
-                    echo 'Publish Artifacts & appConfig.json in progress'
-                    if (isUnix()) {
-                        dir('devops-web-maven/') {
-                            if (fileExists('target/devops-web-maven.jar')) {
-                                // upload artifactory and also publish build info
-                                artifactoryPublishInfo = artifactoryServer.upload(uploadMavenArtifactUnix)
-                                artifactoryPublishInfo.retention maxBuilds: 5
-                                // and publish build info to artifactory
-                                artifactoryServer.publishBuildInfo(artifactoryPublishInfo)
-                            } else {
-                                error 'Publish: Failed during file upload/publish to artifactory'
-                            }
-                        }
-                        // TODO: Work on this
-                        /*causing Error: Error occurred for request CONNECT localhost:8081 HTTP/1.1:
-                        sun.security.validator.ValidatorException: PKIX path building failed:
-                        sun.security.provider.certpath.SunCertPathBuilderException:
-                        unable to find valid certification path to requested target.*/
-
-                        /*
-                        artifactoryServer.download(downloadAppConfigUnix)
-                        dir('downloadsFromArtifactory/') {
-                            sh '''
-                                curl -uadmin:APTvW3dVn6kUTbS -O "http://localhost:8081/artifactory/generic-local/Applications/DevOps/devops-web-maven/DEV/appConfig.json"
-                                FILE=appConfig.json
-                                TEMP=temp.json
-                                if [ -f $FILE ]
-                                then
-                                echo "File $FILE exists."
-                                mv $FILE $TEMP
-                                command_publish="jq '.component[0].Build_Number = ${BUILD_NUMBER}' $TEMP > $FILE"
-                                eval $command_publish
-                                fi
-                            '''
-                        }
-                        */
-                    } else {
-                        dir('devops-web-maven\\') {
-                            if (fileExists('target\\devops-web-maven.jar')) {
-                                // upload artifactory and also publish build info
-                                artifactoryPublishInfo = artifactoryServer.upload(uploadMavenArtifactWindows)
-                                artifactoryPublishInfo.retention maxBuilds: 5
-                                // and publish build info to artifactory
-                                artifactoryServer.publishBuildInfo(artifactoryPublishInfo)
-                            } else {
-                                error 'Publish: Failed during file upload/publish to artifactory'
-                            }
-                        }
-                    }
-                }
-                slackSend color: "good", message: "${slackMessagePrefix} -> Archival Complete"
+	      echo 'Publish Artifacts & appConfig.json in progress'
+	      if (isUnix()) {
+		dir('devops-web-maven/') {
+		  if (fileExists('target/devops-web-maven.jar')) {
+		    // upload artifactory and also publish build info
+		    artifactoryPublishInfo = artifactoryServer.upload(uploadMavenArtifactUnix)
+		    artifactoryPublishInfo.retention maxBuilds: 5
+		    // and publish build info to artifactory
+	   	    artifactoryServer.publishBuildInfo(artifactoryPublishInfo)
+		  } else {
+		    error 'Publish: Failed during file upload/publish to artifactory'
+	          }
+		}
+	      } else {
+		dir('devops-web-maven\\') {
+		  if (fileExists('target\\devops-web-maven.jar')) {
+		    // upload artifactory and also publish build info
+		    artifactoryPublishInfo = artifactoryServer.upload(uploadMavenArtifactWindows)
+		    artifactoryPublishInfo.retention maxBuilds: 5
+		    // and publish build info to artifactory
+		    artifactoryServer.publishBuildInfo(artifactoryPublishInfo)
+	          } else {
+		    error 'Publish: Failed during file upload/publish to artifactory'
+	          }
+		}
+	      }
+              slackSend color: "good", message: "${slackMessagePrefix} -> Archival Complete"
             } catch (exc) {
                 slackSend color: "danger", message: "${slackMessagePrefix} -> Archival Failed"
                 error "Failure in Publish stage: ${exc}"
@@ -267,29 +228,27 @@ try {
         }
 
         stage('Deployment') {
-            if (isDeploymentEnabled) {
-                echo 'Deploy application using ansible'
-                try {
-                    if (isUnix()) {
-                        //ansiblePlaybook installation: 'ansible1.5', playbook: 'devops-web-maven/configuration_scripts/app-service-deploy.yml'
+		echo 'Deploy application using ansible'
+		try {
+		    if (isUnix()) {
+			//ansiblePlaybook installation: 'ansible1.5', playbook: 'devops-web-maven/configuration_scripts/app-service-deploy.yml'
 			dir('devops-web-maven/configuration_scripts/') {
 			  sh "ansible-playbook app-service-deploy.yml -i mediconnekt_hosts"
 			}                       
-                    } else {
-                        dir('devops-web-maven\\') {
-                            // Do Something else
-                        }
-                    }
-                    slackSend color: "good", message: "${slackMessagePrefix} -> Deployment Complete"
-                } catch (exc) {
-                    slackSend color: "danger", message: "${slackMessagePrefix} -> Deployment Failed"
-                    error "Failure in Deployment stage: ${exc}"
-                }
-            }
+		    } else {
+			dir('devops-web-maven\\') {
+			    // Do Something else
+			}
+		    }
+		    slackSend color: "good", message: "${slackMessagePrefix} -> Deployment Complete"
+		} catch (exc) {
+		    slackSend color: "danger", message: "${slackMessagePrefix} -> Deployment Failed"
+		    error "Failure in Deployment stage: ${exc}"
+		}
         }
 		
 		stage('Build and Run Test Suite') {
-			if (isSeleniumTestingEnabled) {
+			
 				try {
 					if (isUnix()) {
 						dir('devops-web-test-suite/build/') {
@@ -315,11 +274,11 @@ try {
 					slackSend color: "danger", message: "${slackMessagePrefix} -> Test Suite Run Failed"
 					error "Failure in Build and Run Test Suite stage: ${exc}"
 				}
-			}
+			
 		}
 
         stage('Generate Reports') {
-            if (isReportsEnabled) {
+            
                 try {
                     if (isUnix()) {
                         //jacoco()
@@ -335,7 +294,7 @@ try {
                     slackSend color: "warning", message: "${slackMessagePrefix} -> Generate Reports Failed"
                     error "Failure in Generate Reports stage: ${exc}"
                 }
-            }
+            
         }
 
     }
