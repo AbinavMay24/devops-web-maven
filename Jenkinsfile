@@ -231,7 +231,7 @@ try {
 		    if (isUnix()) {
 			//ansiblePlaybook installation: 'ansible1.5', playbook: 'devops-web-maven/configuration_scripts/app-service-deploy.yml'
 			dir('devops-web-maven/configuration_scripts/') {
-			  sh "ansible-playbook app-service-deploy.yml -i mediconnekt_hosts"
+			  sh "ansible-playbook app-service-deploy.yml"
 			}                       
 		    } else {
 			dir('devops-web-maven\\') {
