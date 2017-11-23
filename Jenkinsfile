@@ -134,13 +134,11 @@ try {
                     git url: 'https://github.com/veersudhir83/devops-web-maven.git',
                             branch: 'master'
                 }
-
-                if (isSeleniumTestingEnabled) {
-                    dir('devops-web-test-suite') {
-                        git url: 'https://github.com/veersudhir83/devops-web-test-suite.git',
-                                branch: 'master'
-                    }
-                }
+		    
+                dir('devops-web-test-suite') {
+                    git url: 'https://github.com/veersudhir83/devops-web-test-suite.git',
+                           branch: 'master'
+                }                
 
                 dir('downloadsFromArtifactory') {
                     // created folder for artifactory
