@@ -33,7 +33,7 @@ try {
         def appEnv  // application environment currently in progress
         def artifactName = appName // name of the war/jar/ear in artifactory
         def artifactExtension = "jar" // extension of the war/jar/ear - for both target directory and artifactory
-        def artifactoryRepoName = 'DevOps' // repo name in artifactory
+        def artifactoryRepoName = 'Quest-DevOps' // repo name in artifactory
         def artifactoryAppName = appName // application name as per artifactory
 
         def buildNumber = env.BUILD_NUMBER
@@ -43,11 +43,11 @@ try {
         def SONAR_HOST_URL = 'http://localhost:9000'
 
         // Logic for Slack Notification Service
-        def slackBaseUrl = 'https://defaultgrouptalk.slack.com/services/hooks/jenkins-ci/'
-        def slackChannel = '#general'
-        def slackTeamDomain = 'defaultgrouptalk'
-        def slackMessagePrefix = "Job ${env.JOB_NAME}:${env.BUILD_NUMBER}"
-        def slackTokenCredentialId = 'ecd292a7-bf0e-45c9-b599-aeb317ce2170' // replace with right one from jenkins credentials details
+        def slackBaseUrl = 'https://devops-questglobal.slack.com/services/hooks/jenkins-ci/'
+        def slackChannel = '#devops'
+        def slackTeamDomain = 'devops-questglobal'
+        def slackMessagePrefix = "Local GIT-Job:Build ${env.JOB_NAME}:${env.BUILD_NUMBER}"
+        def slackTokenCredentialId = 'adc79c8d-980a-490e-8ca5-d32a2154b017'
 
         // color can be good, warning, danger or anything
         slackSend baseUrl: "${slackBaseUrl}", channel: "${slackChannel}", color: "good", message: "${slackMessagePrefix} -> Build Started", teamDomain: "${slackTeamDomain}", tokenCredentialId: "${slackTokenCredentialId}"
@@ -122,8 +122,8 @@ try {
                 } else {
                     bat(/echo 'Running in windows mode' /)
                 }
-                mvnHome = tool name: 'mvn3', type: 'maven'
-                antHome = tool name: 'ant1.9.6', type: 'ant'
+                mvnHome = tool name: 'mvn3.3.9', type: 'maven'
+                antHome = tool name: 'ant1.9.8', type: 'ant'
                 ansible = tool name: 'ansible1.5', type: 'org.jenkinsci.plugins.ansible.AnsibleInstallation'
 
                 if (isSonarAnalysisEnabled) {
