@@ -127,7 +127,7 @@ try {
                 ansible = tool name: 'ansible', type: 'org.jenkinsci.plugins.ansible.AnsibleInstallation'
 
                 if (isSonarAnalysisEnabled) {
-                    sonarHome = tool name: 'sonar-scanner-3.0.3.778', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                    sonarHome = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
                 }
                 slackSend color: "good", message: "${slackMessagePrefix} -> Tool Setup Complete"
 
